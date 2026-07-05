@@ -20,7 +20,7 @@ An event ticketing platform built with a microservices architecture using Spring
       ┌──────────┐ ┌──────────┐ ┌──────────┐
       │Inventory │ │  Booking │ │  Order   │
       │ Service  │ │  Service │ │  Service │
-      │ (Port8080)│ │ (Port8081)│ │ (Port8082)│
+      │ Port8080)│ │ Port8081)│ │(Port8082)│
       └────┬─────┘ └────┬─────┘ └────┬─────┘
            │            │            │
            └────────────┼────────────┘
