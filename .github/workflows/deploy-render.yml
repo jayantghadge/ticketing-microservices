@@ -1,0 +1,20 @@
+name: Deploy to Render
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy API Gateway
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_APIGATEWAY }}
+      - name: Deploy Booking Service
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_BOOKING }}
+      - name: Deploy Inventory Service
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_INVENTORY }}
+      - name: Deploy Order Service
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_ORDER }}

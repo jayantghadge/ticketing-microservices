@@ -1,0 +1,32 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        service:
+          - name: apigateway
+            port: 8090
+          - name: bookingservice
+            port: 8081
+          - name: inventoryservice
+            port: 8080
+          - name: orderservice
+            port: 8082
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: maven
+      - run: mvn package -DskipTests --file ${{ matrix.service.name }}/pom.xml
+      - run: docker build -t ticketing/${{ matrix.service.name }}:latest
+          ${{ matrix.service.name }}/
+      - run: echo "Built ticketing/${{ matrix.service.name }}:latest"
