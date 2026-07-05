@@ -1,13 +1,9 @@
-name: Build & Test
+name: CI
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
-  all:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,9 +12,7 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: maven
-      - name: Build & test all services
-        run: |
-          for service in inventoryservice bookingservice orderservice apigateway; do
-            echo "=== $service ==="
-            mvn clean test --file "$service/pom.xml"
+      - run: |
+          for svc in inventoryservice bookingservice orderservice apigateway; do
+            mvn clean test --file "$svc/pom.xml"
           done
