@@ -32,14 +32,17 @@ public class InventoryService {
         final List<Event> events = eventRepository.findAll();
 
         return events.stream().map(event -> EventInventoryResponse.builder()
+                .eventId(event.getId())
                 .event(event.getName())
                 .capacity(event.getLeftCapacity())
+                .ticketPrice(event.getTicketPrice())
                 .venue(event.getVenue())
                 .build()).collect(Collectors.toList());
     }
 
     public VenueInventoryResponse getVenueInformation(final Long venueId){
-        final Venue venue = venueRepository.findById(venueId).orElse(null);
+        final Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new RuntimeException("Venue not found: " + venueId));
 
         return VenueInventoryResponse.builder()
                 .venueId(venue.getId())
@@ -50,7 +53,8 @@ public class InventoryService {
     }
 
     public EventInventoryResponse getEventInventory(final Long eventId){
-        final Event event = eventRepository.findById(eventId).orElse(null);
+        final Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found: " + eventId));
 
         return EventInventoryResponse.builder()
                 .event(event.getName())
@@ -62,7 +66,8 @@ public class InventoryService {
     }
 
     public void updateEventCapacity(final Long eventId, final Long ticketsBooked){
-        final Event event = eventRepository.findById(eventId).orElse(null);
+        final Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found: " + eventId));
         event.setLeftCapacity(event.getLeftCapacity() - ticketsBooked);
         eventRepository.saveAndFlush(event);
         log.info("Updated event capacity for event id: {} with tickets booked: {}", eventId, ticketsBooked);

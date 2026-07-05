@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class VenueResponse {
-    private Long Id;
+    private Long id;
     private String name;
     private String address;
-    private VenueResponse venue;
     private Long totalCapacity;
 }
