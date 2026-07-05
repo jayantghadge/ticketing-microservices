@@ -11,8 +11,8 @@ An event ticketing platform built with a microservices architecture using Spring
                     └──────┬──────┘
                            │
                     ┌──────▼──────┐
-                    │  API Gateway │
-                    │   (Port 8090)│
+                    │ API Gateway │
+                    │  (Port 8090)│
                     └──┬───┬───┬──┘
                        │   │   │
               ┌────────┘   │   └────────┐
