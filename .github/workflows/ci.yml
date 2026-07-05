@@ -1,4 +1,4 @@
-name: CI — Build & Test
+name: Build & Test
 
 on:
   push:
@@ -7,14 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        service:
-          - inventoryservice
-          - bookingservice
-          - orderservice
-          - apigateway
+  all:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +16,9 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: maven
-      - run: mvn clean test --file ${{ matrix.service }}/pom.xml
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report-${{ matrix.service }}
-          path: ${{ matrix.service }}/target/site/jacoco/
+      - name: Build & test all services
+        run: |
+          for service in inventoryservice bookingservice orderservice apigateway; do
+            echo "=== $service ==="
+            mvn clean test --file "$service/pom.xml"
+          done
